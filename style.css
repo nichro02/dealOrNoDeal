@@ -1,0 +1,21 @@
+#gameTitle {
+    text-align: center;
+}
+body {
+    background-color: blue;
+}
+
+main {
+    margin: 0 auto;
+    text-align: center;
+    height: 500px;
+    width: 80%;
+}
+
+.briefcase {
+    display: inline-block;
+    border: 1px solid black;
+    text-align: center;
+    height: 20%;
+    width: 20%;
+}

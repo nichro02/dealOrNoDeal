@@ -1,8 +1,19 @@
 #gameTitle {
     text-align: center;
 }
+
+#valueBoard, #playerInfo {
+    width: 10%;
+}
+
+#buttons {
+    text-align: center;
+    margin: 0 0 2% 0;
+    opacity: 20%
+}
+
 body {
-    background-color: blue;
+    background-color: beige;
 }
 
 main {
@@ -18,4 +29,18 @@ main {
     text-align: center;
     height: 20%;
     width: 20%;
+    color:rgba(0,0,0,0)
+}
+
+.revealed {
+    display: inline-block;
+    border: 1px solid black;
+    text-align: center;
+    height: 20%;
+    width: 20%;
+    color:black;
+}
+
+.eliminatedPrize {
+    opacity: 0.3;
 }

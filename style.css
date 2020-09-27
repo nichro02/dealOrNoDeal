@@ -1,12 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap');
+
 #gameTitle {
     text-align: center;
+    font-family: 'Play', sans-serif;
+    font-size: 240%;
 }
 
 #valueBoard, #playerInfo {
     width: 10%;
 }
 
+#playerInfo, #remainingValues, #pastOffers {
+    font-family: 'Play', sans-serif;
+}
+
 #buttons {
+    font-family: 'Play', sans-serif;
     text-align: center;
     margin: 0 0 2% 0;
     opacity: 20%
@@ -24,9 +33,11 @@ main {
 }
 
 .briefcase {
+    font-family: 'Play', sans-serif;
     display: inline-block;
     border: 1px solid black;
     text-align: center;
+    /*padding: 12% 0 0 0;*/
     height: 20%;
     width: 20%;
     color:rgba(0,0,0,0)
@@ -43,4 +54,9 @@ main {
 
 .eliminatedPrize {
     opacity: 0.3;
+}
+
+.presentedOffer, .availablePrize {
+    font-family: 'Play', sans-serif;
+    font-weight: 5%;
 }

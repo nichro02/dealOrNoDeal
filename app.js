@@ -103,6 +103,7 @@ game = {
         bonus.setAttribute('id', 'bonus')
         bonus.innerHTML = this.bonusOutcomes[Math.floor(Math.random() * this.bonusOutcomes.length)]
         board.appendChild(bonus)
+        //this.addBriefcaseListeners() 
     },
     selectBriefcases: function(event) {
         //console.log(this)
@@ -207,8 +208,8 @@ game = {
         console.log(maxPrize)
         console.log(eliminatedAmount)
         console.log(casesLeft)
-        console.log(this.casesToOpen)
-        this.offerValue = Math.round((maxPrize - eliminatedAmount) / this.casesToOpen)
+        console.log(this.casesToOpen + 1)
+        this.offerValue = Math.round((maxPrize - eliminatedAmount) / (this.casesToOpen + 1))
         console.log('offer is',this.offerValue)
         return this.offerValue
         
@@ -240,6 +241,7 @@ game = {
         const addPastOffer = document.querySelector('#storeOffers')
         const mostRecentOffer = addPastOffer.firstChild
         const offer = document.createElement('p')
+        offer.classList.add('presentedOffer')
         offer.innerHTML = '$' + this.offerValue
         //addPastOffer.appendChild(offer)
         addPastOffer.insertBefore(offer, mostRecentOffer)
@@ -261,6 +263,20 @@ game = {
             return this.playerWinnings = 0
         }
     },
+    userDecision: function() {
+        console.log('button works')
+        console.log(this)
+        if(game.casesToOpen === 16
+            || game.casesToOpen === 13
+            || game.casesToOpen === 10
+            || game.casesToOpen === 7
+            || game.casesToOpen === 4
+            || game.casesToOpen === 2
+            || game.casesToOpen === 1
+        ) {
+            console.log('conditional works')
+        }
+    },
     addBriefcaseListeners: function() {
         const cases = document.querySelectorAll('.briefcase')
         for(let i = 0; i < cases.length; i++) {
@@ -271,6 +287,10 @@ game = {
     addButtonListeners: function() {
         const buttons = document.querySelectorAll('.buttons')
         console.log(buttons)
+        for(let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', this.userDecision)
+            //console.log('event listener added')
+        }
     }
 
 }

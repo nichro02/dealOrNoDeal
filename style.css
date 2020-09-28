@@ -23,6 +23,8 @@
 
 body {
     background-color: beige;
+    /*background-image: url(https://i.ytimg.com/vi/zG41e6kF2TU/maxresdefault.jpg);
+    background-size: cover;*/
 }
 
 main {
@@ -32,20 +34,28 @@ main {
     width: 80%;
 }
 
+P {
+    font-family: sans-serif;
+}
+
 .briefcase {
     font-family: 'Play', sans-serif;
+    font-size: 180%;
     display: inline-block;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     text-align: center;
     /*padding: 12% 0 0 0;*/
+    background-image: url(https://images.all-free-download.com/images/graphiclarge/silver_metal_briefcase_312110.jpg);
+    background-size: cover;
+    background-color:rgba(0,0,0,0);
     height: 20%;
     width: 20%;
-    color:rgba(0,0,0,0)
+    color:rgba(0,0,0,0);
 }
 
 .revealed {
     display: inline-block;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     text-align: center;
     height: 20%;
     width: 20%;
@@ -57,6 +67,11 @@ main {
 }
 
 .presentedOffer, .availablePrize {
+    font-family: 'Play', sans-serif;
+    font-weight: 5%;
+}
+
+.messageCenter {
     font-family: 'Play', sans-serif;
     font-weight: 5%;
 }

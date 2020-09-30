@@ -266,6 +266,8 @@ game = {
             game.keepCase()
         } else if (buttonSelected === 'deal' && game.activeBoard === false && game.bonusStatus === false) {
             console.log('deal button was selected')
+            const showPlayerCaseValue = document.querySelector('.playerCase')
+            showPlayerCaseValue.classList.add('revealed')
             game.playerWinnings = game.offerValue
             console.log(game.playerWinnings)
             //game.activeBoard = false

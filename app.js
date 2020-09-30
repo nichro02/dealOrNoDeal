@@ -67,7 +67,7 @@ game = {
             player.appendChild(selection)
             game.round += 1
             console.log(selection)
-            console.log(game.switchCases())
+            //console.log(game.switchCases())
             selection.removeEventListener('click', this.selectBriefcases) 
         } else if(game.round <= 1 && game.activeBoard === true) {
             game.briefcaseToOpen()
@@ -367,7 +367,7 @@ game = {
         const messageCenter = document.querySelector('.messageCenterText')
         const message = document.createElement('p')
         message.classList.add('messageCenterText')
-        message.innerHTML = 'Please select a briefcase from the board. You will hold onto this briefcase until either you sell it to the banker or all of the other briefcases have been opened. This game has seven rounds. You open six briefcases in the first round, three in rounds two-five, two in round six, and one in the round seven. Choose your briefcase carefully! Values range from $0.01 to $500k.'
+        message.innerHTML = 'Please select a briefcase from the board. You will hold onto this briefcase until either you sell it to the banker or all of the other briefcases have been opened. This game has seven rounds. You open five briefcases in the first round, three in rounds two-five, two in round six, and one in round seven. In the final round, you will have the option to switch your briefcase with the remaining unopened briefcase. Choose your briefcase carefully! Values range from $0.01 to $500k.'
         messageCenter.appendChild(message)
     },
     reminderMessage: function() {

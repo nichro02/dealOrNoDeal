@@ -6,8 +6,13 @@
     font-size: 240%;
 }
 
-#valueBoard, #playerInfo {
+#valueBoard, #pastOffers {
     width: 10%;
+    text-align: center;
+}
+
+#playerInfo {
+    width: 25%;
 }
 
 #playerInfo, #remainingValues, #pastOffers {
@@ -26,6 +31,11 @@
     display: block;
 }
 
+#wrapper {
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+}
+
 body {
     background-color: beige;
     /*background-image: url(https://i.ytimg.com/vi/zG41e6kF2TU/maxresdefault.jpg);
@@ -36,7 +46,7 @@ main {
     margin: 0 auto;
     text-align: center;
     height: 600px;
-    width: 80%;
+    width: 90%;
 }
 
 P {

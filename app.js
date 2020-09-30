@@ -1,6 +1,7 @@
 game = {
     activeBoard: true,
     bankOffer: false,
+    bonusStatus: false,
     player: 'Player',
     playerWinnings: 0,
     offerValue: 0,
@@ -9,7 +10,7 @@ game = {
     prizeValues: [.01, .1, .5, 1, 5, 10, 50, 100, 250, 500, 750, 1000, 3000, 5000, 10000, 15000, 25000, 50000, 75000, 100000, 250000, 500000],
     selectedValues: [0],
     bonusOutcomes: ['add 10k', 'double money', 'lose half', 'lose all'],
-    bonusStatus: false,
+    
     //shuffle prize array
     shufflePrizes: function(array) {
         for(let i = array.length - 1; i > 0; i--) {
@@ -62,6 +63,7 @@ game = {
             const player = document.querySelector('#playerInfo')
             const selection = event.target
             selection.classList.add('playerCase')
+            selection.classList.remove('unopened')
             player.appendChild(selection)
             game.round += 1
             console.log(selection)
@@ -258,7 +260,11 @@ game = {
         
         const buttonSelected = event.target.getAttribute('id')
         console.log(buttonSelected)
-        if (buttonSelected === 'deal' && game.activeBoard === false && game.bonusStatus === false) {
+        if (buttonSelected === 'deal' && game.casesToOpen === 0 && game.activeBoard === true && game.bonusStatus === false) {
+            game.switchCases()
+        } else if (buttonSelected === 'noDeal' && game.casesToOpen === 0 && game.activeBoard === true && game.bonusStatus === false) {
+            game.keepCase()
+        } else if (buttonSelected === 'deal' && game.activeBoard === false && game.bonusStatus === false) {
             console.log('deal button was selected')
             game.playerWinnings = game.offerValue
             console.log(game.playerWinnings)
@@ -266,7 +272,7 @@ game = {
             game.bonusStatus = true
             game.casesToOpen = 0
             game.offerPrompt()
-        } else if (buttonSelected === 'noDeal' && game.activeBoard === false && game.bonusStatus === false) {
+        } else if (buttonSelected === 'noDeal' && game.casesToOpen > 0 && game.activeBoard === false && game.bonusStatus === false) {
             console.log('no deal button was selected')
             game.reminderMessage()
             game.activeBoard = true
@@ -283,20 +289,31 @@ game = {
         //expand conditional to include bonus decision?
     },
     switchCases: function() {
-        if(game.activeBoard === false) {
+        if(game.casesToOpen === 0 && game.activeBoard === true && game.bonusStatus === false){
         const playersCaseLocation = document.querySelector('#playerInfo')
         const playersCase = document.querySelector('.playerCase')
         const board = document.querySelector('main')
         const unopenedCase = document.querySelector('.unopened')
         console.log(playersCase)
-        //board.insertBefore(playersCase, unopenedCase)
-        //playersCaseLocation.appendChild(unopenedCase)
+        board.insertBefore(playersCase, unopenedCase)
+        playersCaseLocation.appendChild(unopenedCase)
         playersCase.classList.add('revealed')
         unopenedCase.classList.add('revealed')
         const swapValue = unopenedCase.innerHTML
         game.playerWinnings = parseInt(swapValue)
+        game.bonusStatus = true
         game.swapOutcome()
         }
+        
+    },
+    keepCase: function() {
+        const caseValue = document.querySelector('.playerCase')
+        caseValue.classList.add('revealed')
+        const unopenedCase = document.querySelector('.unopened')
+        unopenedCase.classList.add('revealed')
+        game.playerWinnings = parseInt(caseValue.innerHTML)
+        game.bonusStatus = true
+        game.swapOutcome()
     },
     clearMessageCenter: function() {
         const textToReplace = document.querySelector('.messageCenterText')
@@ -318,6 +335,7 @@ game = {
             presentOffer.innerHTML = 'The banker called! He is offering you the opportunity to switch your briefcase with the last unopened briefcase. Deal or no deal?'
         } else if(game.bonusStatus === true) {
             presentOffer.innerHTML = 'Congratulations, you won ' + offerValue + '! Would you like to win more? You can open the bonus briefcase to try to win more but beware, you could lose everything! Press Deal if you want to open the bonus case, press No Deal if you are happy with your winnings.'
+            //add code in to show what was in case
         }
         messageCenter.appendChild(presentOffer)
 

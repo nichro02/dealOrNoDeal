@@ -255,26 +255,30 @@ game = {
         //unfreeze board if user rejects deal
         console.log('deal or no deal method called')
         console.log(event.target)
+        
         const buttonSelected = event.target.getAttribute('id')
         console.log(buttonSelected)
-        if (buttonSelected === 'deal'&& game.bonusStatus === false) {
+        if (buttonSelected === 'deal' && game.activeBoard === false && game.bonusStatus === false) {
             console.log('deal button was selected')
             game.playerWinnings = game.offerValue
             console.log(game.playerWinnings)
-            game.activeBoard = false
+            //game.activeBoard = false
             game.bonusStatus = true
             game.casesToOpen = 0
             game.offerPrompt()
-        } else if (buttonSelected === 'noDeal'&& game.bonusStatus === false) {
+        } else if (buttonSelected === 'noDeal' && game.activeBoard === false && game.bonusStatus === false) {
             console.log('no deal button was selected')
             game.reminderMessage()
             game.activeBoard = true
         } else if (buttonSelected === 'deal' && game.bonusStatus === true) {
             game.bonusCaseOutcomes()
             game.bonusMessage()
+            document.querySelectorAll('.buttons').forEach(button => button.parentNode.removeChild(button))
             console.log(game.playerWinnings)
         } else if (buttonSelected === 'noDeal' && game.bonusStatus === true) {
             console.log('good game. the bonus case contained ' + document.querySelector('#bonus').innerHTML)
+            game.bonusMessage()
+            document.querySelectorAll('.buttons').forEach(button => button.parentNode.removeChild(button))
         }
         //expand conditional to include bonus decision?
     },
@@ -335,7 +339,7 @@ game = {
         const bonusText = document.querySelector('#bonus').innerHTML
         bonus.innerHTML = 'The bonus case contained ' + bonusText + '! Your winnings for the game are $' + winnings + '.'
         messageCenter.appendChild(bonus)
-        document.querySelectorAll('.buttons').remove()
+        
 
     },
     initiateGameMessage: function() {

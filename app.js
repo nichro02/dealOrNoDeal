@@ -47,6 +47,7 @@ game = {
         //this.addBriefcaseListeners() 
     },
     addPlayerName: function(event) {
+        //add player name to game display
         const playerName = document.querySelector('#playerName')
         const addNameButton = document.querySelector('#submitName')
         this.player = playerName.value
@@ -57,6 +58,7 @@ game = {
         game.initiateGameMessage()
     },
     selectBriefcases: function(event) {
+        //controls gameflow by allowing users to click on briefcases to eliminate from the game
         if(game.round === 0 && game.activeBoard === true) {
             //console.log(game.round)
             //console.log('this is the players case')
@@ -105,6 +107,7 @@ game = {
         */
     },
     briefcaseToOpen: function() {
+        //display contents of briefcase and check to see if the banker should call with an offer
         if(game.casesToOpen > 1) {
             //console.log('case was opened')
             const clickedCase = event.target
@@ -136,6 +139,7 @@ game = {
         
     },
     availableValues: function() {
+        //sorts the prizes in ascending order and appends them to an element that will display on the side of gameboard so player can keep track of remaining available prizes
         let sortedPrizes = this.prizeValues.sort((a,b)=>a-b)
         sortedPrizes.forEach(function(prize) {
             const valueBoard = document.querySelector('#valueBoard')
@@ -147,15 +151,14 @@ game = {
         })
     },
     computeBankOffer: function() {
-        //this.activeBoard = true
-        //shoule probably move gameboard activation into method where player makes choice
+        //compute offer banker will present to player
         let maxPrize = this.prizeValues.reduce(function(a, b) {
             return a + b
         })
         let eliminatedAmount = this.selectedValues.reduce(function(x,y) {
             return x + y
         })
-        let casesLeft = this.prizeValues.length - this.selectedValues.length
+        //let casesLeft = this.prizeValues.length - this.selectedValues.length
         //If I have time: give banker +/- 10 range on offers
         //console.log(maxPrize)
         //console.log(eliminatedAmount)
@@ -167,6 +170,7 @@ game = {
         
     },
     bankerCalls: function() {
+        //mechanism for keeping track of when banker should call
         //console.log(this)
         if(this.casesToOpen === 16
             || this.casesToOpen === 13
@@ -216,6 +220,7 @@ game = {
         */
     },
     bonusCaseOutcomes: function() {
+        //grab what is in the bonus case and use that to calculate final winnings if user decides to open bonus case
         const bonusValue = document.querySelector('#bonus').innerHTML
         console.log(bonusValue)
         if(bonusValue === 'add 10k') {
@@ -233,6 +238,7 @@ game = {
         }
     },
     userOption: function(event) {
+        //mechanism to keep track of when user should make decision
         //console.log('button works')
         //console.log(event.target)
         if(game.casesToOpen === 16
@@ -254,7 +260,8 @@ game = {
     },
     dealOrNoDeal: function() {
         //evaluate whether deal or no deal button is clicked
-        //unfreeze board if user rejects deal
+        //unfreeze board if user rejects deal and there is a case to open
+        //evaluate whether user participates in bonus round
         console.log('deal or no deal method called')
         console.log(event.target)
         
@@ -291,6 +298,7 @@ game = {
         //expand conditional to include bonus decision?
     },
     switchCases: function() {
+        //in final round before bonus, player has option to swap cases with the remaining unopened briefcase. This code will run if user decides to switch
         if(game.casesToOpen === 0 && game.activeBoard === true && game.bonusStatus === false){
         const playersCaseLocation = document.querySelector('#playerInfo')
         const playersCase = document.querySelector('.playerCase')
@@ -309,6 +317,7 @@ game = {
         
     },
     keepCase: function() {
+        //run this code if the player has one briefcase remaining and decides not to switch
         const caseValue = document.querySelector('.playerCase')
         caseValue.classList.add('revealed')
         const unopenedCase = document.querySelector('.unopened')
@@ -318,6 +327,7 @@ game = {
         game.swapOutcome()
     },
     clearMessageCenter: function() {
+        //clear existing message - will be invoked in each message display method
         const textToReplace = document.querySelector('.messageCenterText')
         while(textToReplace.firstChild){
             //console.log(textToReplace.firstChild)
@@ -325,6 +335,7 @@ game = {
         }
     },
     offerPrompt: function() {
+        //generate message to use conveying offer information and request to accept or reject offer
         this.clearMessageCenter()
         const offerValue = document.querySelector('.presentedOffer').innerHTML
         const messageCenter = document.querySelector('.messageCenterText')
@@ -336,21 +347,23 @@ game = {
         } else if(game.casesToOpen === 0 && game.bonusStatus === false) {
             presentOffer.innerHTML = 'The banker called! He is offering you the opportunity to switch your briefcase with the last unopened briefcase. Deal or no deal?'
         } else if(game.bonusStatus === true) {
-            presentOffer.innerHTML = 'Congratulations, you won ' + offerValue + '! Would you like to win more? You can open the bonus briefcase to try to win more but beware, you could lose everything! Press Deal if you want to open the bonus case, press No Deal if you are happy with your winnings.'
+            presentOffer.innerHTML = 'Congratulations, you won ' + offerValue + '! Would you like to win more? You can open the bonus briefcase to try to win 10k more or even double your money but beware, you could lose half or everything! Press Deal if you want to open the bonus case, press No Deal if you are happy with your winnings.'
             //add code in to show what was in case
         }
         messageCenter.appendChild(presentOffer)
 
     },
     swapOutcome: function() {
+        //message to display after player is asked to switch briefcases
         this.clearMessageCenter()
         const messageCenter = document.querySelector('.messageCenterText')
         const displayWinnings = document.createElement('p')
         displayWinnings.classList.add('messageCenterText')
-        displayWinnings.innerHTML = 'Congratulations, you won ' + this.playerWinnings + '! Would you like to win more? You can open the bonus briefcase to try to win more but beware, you could lose everything! Press Deal if you want to open the bonus case, press No Deal if you are happing with your winnings.'
+        displayWinnings.innerHTML = 'Congratulations, you won ' + this.playerWinnings + '! Would you like to win 10k more or double your money? You can open the bonus briefcase to try to win more but beware, you could lose half of your winnings, or you could even lose everything! Press Deal if you want to open the bonus case, press No Deal if you are happing with your winnings.'
         messageCenter.appendChild(displayWinnings)
     },
     bonusMessage: function() {
+        //reveal what was in bonus case, determine player's final winnings
         this.clearMessageCenter()
         const messageCenter = document.querySelector('.messageCenterText')
         const bonus = document.createElement('p')
@@ -363,14 +376,16 @@ game = {
 
     },
     initiateGameMessage: function() {
+        //instructions to display after player enters name
         this.clearMessageCenter()
         const messageCenter = document.querySelector('.messageCenterText')
         const message = document.createElement('p')
         message.classList.add('messageCenterText')
-        message.innerHTML = 'Please select a briefcase from the board. You will hold onto this briefcase until either you sell it to the banker or all of the other briefcases have been opened. This game has seven rounds. You open five briefcases in the first round, three in rounds two-five, two in round six, and one in round seven. In the final round, you will have the option to switch your briefcase with the remaining unopened briefcase. Choose your briefcase carefully! Values range from $0.01 to $500k.'
+        message.innerHTML = 'Please select a briefcase from the board. You will hold onto this briefcase until either you sell it to the banker or all of the other briefcases have been opened. This game has up to eight rounds. You open five briefcases in the first round, three in rounds two-five, two in round six, and one in round seven. In the final round, you will have the option to switch your briefcase with the remaining unopened briefcase. Choose your briefcase carefully! Values range from $0.01 to $500k. Finally, you will be given a chance to open the golden bonus briefcase at the end of the game. More on that later.'
         messageCenter.appendChild(message)
     },
     reminderMessage: function() {
+        //standard message to display while user is between offers
         this.clearMessageCenter()
         const messageCenter = document.querySelector('.messageCenterText')
         const reminder = document.createElement('p')
@@ -379,6 +394,7 @@ game = {
         messageCenter.appendChild(reminder)
     },
     addBriefcaseListeners: function() {
+        //add listeners to briefcase so they can be opened
         const cases = document.querySelectorAll('.briefcase')
         for(let i = 0; i < cases.length; i++) {
             cases[i].addEventListener('click', this.selectBriefcases)
@@ -386,6 +402,7 @@ game = {
         }
     },
     addButtonListeners: function() {
+        //add listeners to button for tracking if offer is accepted/rejected
         const buttons = document.querySelectorAll('.buttons')
         //console.log(buttons)
         for(let i = 0; i < buttons.length; i++) {
@@ -393,11 +410,12 @@ game = {
             //console.log('event listener added')
         }
     },
-    addBonusCaseListner: function() {
+    /*addBonusCaseListner: function() {
         const bonus = document.querySelector('#bonus')
         //not sure if I need this yet, might just use button and unhide if user accepts bonus offer
-    },
+    },*/
     addUserNameListener: function() {
+        //add listener to user name submit button
         const nameButton = document.querySelector('#submitName')
         nameButton.addEventListener('click', this.addPlayerName)
     }

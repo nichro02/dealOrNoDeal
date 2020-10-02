@@ -59,10 +59,12 @@ P {
     display: inline-block;
     /*border: 1px solid black;*/
     text-align: center;
+    
     /*padding: 12% 0 0 0;*/
-    background-image: url(https://images.all-free-download.com/images/graphiclarge/silver_metal_briefcase_312110.jpg);
-    background-size: cover;
+    background-image: url(https://www.netclipart.com/pp/m/86-865367_briefcase-computer-icons-bag-silver-silver-briefcase-png.png);
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
     height: 20%;
     width: 20%;
     color:rgba(0,0,0,0);
@@ -80,6 +82,7 @@ P {
     height: 20%;
     width: 20%;
     color:black;
+    text-shadow: 2px 2px 2px gold;
 }
 
 .eliminatedPrize {

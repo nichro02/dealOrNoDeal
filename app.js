@@ -56,20 +56,21 @@ const game = {
     },
     selectBriefcases: function(event) {
         //controls gameflow by allowing users to click on briefcases to eliminate from the game
-        //console.log(this)
-        if(this.round === 0 && this.activeBoard === true) {
+        console.log(this)
+        if(game.round === 0 && game.activeBoard === true) {
             const player = document.querySelector('#playerInfo')
             const selection = event.target
             selection.classList.add('playerCase')
-            selection.classList.remove('unopened')
             player.appendChild(selection)
-            this.round += 1
+            game.round += 1
             console.log(selection)
-            selection.removeEventListener('click', this.selectBriefcases) 
-        } else if(this.round <= 1 && this.activeBoard === true) {
-            this.briefcaseToOpen()
-        } else if(this.activeBoard === true){
-            this.reminderMessage()
+            console.log(this.activeBoard)
+            selection.removeEventListener('click', game.selectBriefcases)
+            game.reminderMessage() 
+        } else if(game.round <= 1 && game.activeBoard === true) {
+            game.briefcaseToOpen()
+        } else if(game.activeBoard === true){
+            game.reminderMessage()
         }
     },
     briefcaseToOpen: function() {
@@ -81,7 +82,7 @@ const game = {
             clickedCase.classList.add('revealed')
             clickedCase.classList.remove('unopened')
             this.casesToOpen --
-            console.log(game.casesToOpen)
+            console.log(this.casesToOpen)
             this.selectedValues.push(parseInt(eliminatedValue))
             const listOfValues = document.querySelectorAll('.availablePrize')
             for(let i = 0; i < listOfValues.length; i++) {
@@ -90,12 +91,12 @@ const game = {
                 }
             }
             this.bankerCalls()
-            clickedCase.removeEventListener('click', this.selectBriefcases)
+            clickedCase.removeEventListener('click', game.selectBriefcases)
         } else if(this.casesToOpen === 1) {
             const lastCase = event.target
             this.casesToOpen --
             this.bankerCalls()
-            lastCase.removeEventListener('click', this.selectBriefcases)
+            lastCase.removeEventListener('click', game.selectBriefcases)
         } else if(this.casesToOpen === 0) {
             console.log('method to give user option to switch briefcases')
             this.offerPrompt()
@@ -189,19 +190,19 @@ const game = {
         //console.log('button works')
         //console.log(event.target)
         console.log(this)
-        if(this.casesToOpen === 16
-            || this.casesToOpen === 13
-            || this.casesToOpen === 10
-            || this.casesToOpen === 7
-            || this.casesToOpen === 4
-            || this.casesToOpen === 2
-            || this.casesToOpen === 1
-            || this.casesToOpen === 0 && this.bonusStatus === false
-            || this.casesToOpen === 0 && this.bonusStatus === true
+        if(game.casesToOpen === 16
+            || game.casesToOpen === 13
+            || game.casesToOpen === 10
+            || game.casesToOpen === 7
+            || game.casesToOpen === 4
+            || game.casesToOpen === 2
+            || game.casesToOpen === 1
+            || game.casesToOpen === 0 && game.bonusStatus === false
+            || game.casesToOpen === 0 && game.bonusStatus === true
         ) {
             //console.log('Do you accept the bankers offer?')
-            this.dealOrNoDeal()
-        } else if(this.casesToOpen === 0 && this.bonusStatus === true) {
+            game.dealOrNoDeal()
+        } else if(game.casesToOpen === 0 && game.bonusStatus === true) {
             //build bonus case logic into dealOrNoDeal method
             console.log('Bonus case decision')
         }
@@ -244,7 +245,7 @@ const game = {
     },
     switchCases: function() {
         //in final round before bonus, player has option to swap cases with the remaining unopened briefcase. This code will run if user decides to switch
-        //console.log(this)
+        console.log(this)
         if(this.casesToOpen === 0 && this.activeBoard === true && this.bonusStatus === false){
         const playersCaseLocation = document.querySelector('#playerInfo')
         const playersCase = document.querySelector('.playerCase')
@@ -347,21 +348,24 @@ const game = {
         //add listeners to briefcase so they can be opened
         const cases = document.querySelectorAll('.briefcase')
         for(let i = 0; i < cases.length; i++) {
-            cases[i].addEventListener('click', (event) => {
+            cases[i].addEventListener('click',this.selectBriefcases)
+            /*cases[i].addEventListener('click', (event) => {
                 this.selectBriefcases.bind(game)
                 this.selectBriefcases(event)
-            })
+            })*/
         }
-
     },
     addButtonListeners: function() {
         //add listeners to deal/no deal buttons
         const buttons = document.querySelectorAll('.buttons')
         for(let i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener('click', (event) => {
+            for(let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', this.userOption)
+            /*buttons[i].addEventListener('click', (event) => {
                 this.userOption.bind(game)
                 this.userOption(event)
-            })
+            })*/
+            }
         }
     },
     addUserNameListener: function() {
@@ -378,8 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
     game.createBonusCase()
     game.availableValues()
     game.bonusCaseOutcomes()
-    //game.switchCases()
-    //game.bindMethod()
     game.addButtonListeners()
     game.addUserNameListener()
 })

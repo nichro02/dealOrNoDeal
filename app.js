@@ -61,10 +61,11 @@ const game = {
             const player = document.querySelector('#playerInfo')
             const selection = event.target
             selection.classList.add('playerCase')
+            selection.classList.remove('unopened')
             player.appendChild(selection)
             game.round += 1
             console.log(selection)
-            console.log(this.activeBoard)
+            //console.log(this.activeBoard)
             selection.removeEventListener('click', game.selectBriefcases)
             game.reminderMessage() 
         } else if(game.round <= 1 && game.activeBoard === true) {
@@ -161,7 +162,7 @@ const game = {
         const mostRecentOffer = addPastOffer.firstChild
         const offer = document.createElement('p')
         offer.classList.add('presentedOffer')
-        offer.innerHTML = '$' + this.offerValue
+        offer.innerHTML = this.offerValue
         addPastOffer.insertBefore(offer, mostRecentOffer)
         } else if(this.casesToOpen ===0) {
             this.offerPrompt()
@@ -211,7 +212,6 @@ const game = {
         //evaluate whether deal or no deal button is clicked
         //unfreeze board if user rejects deal and there is a case to open
         //evaluate whether user participates in bonus round
-        //console.log('deal or no deal method called')
         //console.log(event.target)
         const buttonSelected = event.target.getAttribute('id')
         console.log(buttonSelected)
@@ -255,6 +255,13 @@ const game = {
         board.insertBefore(playersCase, unopenedCase)
         playersCaseLocation.appendChild(unopenedCase)
         playersCase.classList.add('revealed')
+        this.selectedValues.push(parseInt(playersCase.innerHTML))
+        const listOfValues = document.querySelectorAll('.availablePrize')
+        for(let i = 0; i < listOfValues.length; i++) {
+            if(playersCase.innerHTML === listOfValues[i].innerHTML) {
+                listOfValues[i].classList.add('eliminatedPrize')
+            }
+        }
         unopenedCase.classList.add('revealed')
         const swapValue = unopenedCase.innerHTML
         this.playerWinnings = parseFloat(swapValue)
@@ -270,6 +277,13 @@ const game = {
         caseValue.classList.add('revealed')
         const unopenedCase = document.querySelector('.unopened')
         unopenedCase.classList.add('revealed')
+        this.selectedValues.push(parseInt(unopenedCase.innerHTML))
+        const listOfValues = document.querySelectorAll('.availablePrize')
+        for(let i = 0; i < listOfValues.length; i++) {
+            if(unopenedCase.innerHTML === listOfValues[i].innerHTML) {
+                listOfValues[i].classList.add('eliminatedPrize')
+            }
+        }
         this.playerWinnings = parseFloat(caseValue.innerHTML)
         this.bonusStatus = true
         this.swapOutcome()
@@ -321,7 +335,7 @@ const game = {
         const revealBonus = document.querySelector('#bonus')
         revealBonus.classList.add('revealed')
         const bonusText = document.querySelector('#bonus').innerHTML
-        bonus.innerHTML = 'The bonus case contained ' + bonusText + '! Your winnings for the game are $' + winnings + '.'
+        bonus.innerHTML = 'The bonus case contained ' + bonusText + '! Your winnings for the game are ' + winnings + '.'
         messageCenter.appendChild(bonus)
         
 
@@ -332,7 +346,7 @@ const game = {
         const messageCenter = document.querySelector('.messageCenterText')
         const message = document.createElement('p')
         message.classList.add('messageCenterText')
-        message.innerHTML = 'Please select a briefcase from the board. You will hold onto this briefcase until either you sell it to the banker or all of the other briefcases have been opened. This game has up to eight rounds. You open five briefcases in the first round, three in rounds two-five, two in round six, and one in round seven. In the final round, you will have the option to switch your briefcase with the remaining unopened briefcase. Choose your briefcase carefully! Values range from $0.01 to $500k. Finally, you will be given a chance to open the golden bonus briefcase at the end of the game. More on that later.'
+        message.innerHTML = 'Please select a briefcase from the board. You will hold onto this briefcase until either you sell it to the banker or all of the other briefcases have been opened. This game has up to eight rounds. You open five briefcases by clicking on them in the first round, three briefcases in rounds two-five, two briefcases in round six, and one briefcase in round seven. In the final round, you will have the option to switch your briefcase with the remaining unopened briefcase. Choose your briefcase carefully! Values range from 0.01 to 500k. Finally, you will be given a chance to open the golden bonus briefcase at the end of the game. More on that later.'
         messageCenter.appendChild(message)
     },
     reminderMessage: function() {

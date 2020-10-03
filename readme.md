@@ -24,6 +24,6 @@ I worked with the bind method in this project to make the syntax more consistent
 I'd also be curious to hear feedback on the webpage layout. I intentionally tried to limit the amount of content on the page to what was relevant to the game and providing the user with enough information to understand what is going on, but one thing I didn't include but thought about is a turn counter. The user gets a message at the start of the game letting them know how many rounds there are and how many cases to open, but I wasn't sure if adding it would have made the page too busy. I thought the offer tracker and available values display were more important to gameplay.
 
 # Installation Instructions
-This game is hosted on Github so no installation is requried.
+This game is hosted on Github so no installation is required. Game be accessed at https://nichro02.github.io/unit1-project/
 
 

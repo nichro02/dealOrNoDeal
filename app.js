@@ -56,7 +56,6 @@ const game = {
     },
     selectBriefcases: function(event) {
         //controls gameflow by allowing users to click on briefcases to eliminate from the game
-        console.log(this)
         if(game.round === 0 && game.activeBoard === true) {
             const player = document.querySelector('#playerInfo')
             const selection = event.target
@@ -64,8 +63,6 @@ const game = {
             selection.classList.remove('unopened')
             player.appendChild(selection)
             game.round += 1
-            console.log(selection)
-            //console.log(this.activeBoard)
             selection.removeEventListener('click', game.selectBriefcases)
             game.reminderMessage() 
         } else if(game.round <= 1 && game.activeBoard === true) {
@@ -77,13 +74,11 @@ const game = {
     briefcaseToOpen: function() {
         //display contents of briefcase and check to see if the banker should call with an offer
         if(this.casesToOpen > 1) {
-            //console.log('case was opened')
             const clickedCase = event.target
             const eliminatedValue = event.target.innerHTML
             clickedCase.classList.add('revealed')
             clickedCase.classList.remove('unopened')
             this.casesToOpen --
-            console.log(this.casesToOpen)
             this.selectedValues.push(parseInt(eliminatedValue))
             const listOfValues = document.querySelectorAll('.availablePrize')
             for(let i = 0; i < listOfValues.length; i++) {
@@ -99,7 +94,6 @@ const game = {
             this.bankerCalls()
             lastCase.removeEventListener('click', game.selectBriefcases)
         } else if(this.casesToOpen === 0) {
-            console.log('method to give user option to switch briefcases')
             this.offerPrompt()
         }
         
@@ -124,16 +118,13 @@ const game = {
         let eliminatedAmount = this.selectedValues.reduce(function(x,y) {
             return x + y
         })
-        //If I have time: give banker +/- 10 range on offers
-        //console.log(maxPrize)
+        //Potential enhancement: add 10% variability into banker offer calculation
         this.offerValue = Math.round((maxPrize - eliminatedAmount) / (this.casesToOpen + 1))
-        console.log('offer is',this.offerValue)
         return this.offerValue
         
     },
     bankerCalls: function() {
         //mechanism for keeping track of when banker should call
-        //console.log(this)
         if(this.casesToOpen === 16
             || this.casesToOpen === 13
             || this.casesToOpen === 10
@@ -142,21 +133,18 @@ const game = {
             || this.casesToOpen === 2
             || this.casesToOpen === 1
         ) {
-            console.log('ring ring')
             this.activeBoard = false
             this.computeBankOffer()
             this.offerTracker()
             this.offerPrompt()
             this.userOption()
         } else if(this.casesToOpen === 0) {
-            console.log('the banker has one last offer for you. Do you want to swap your briefcase with the unopened briefcase')
             this.offerPrompt()
             this.userOption()
         }
     },
     offerTracker: function() {
         //add a conditional here to account for last case being selected so that if cases left = 0, call offer prompt method
-        console.log(this)
         if(this.casesToOpen > 0) {
         const addPastOffer = document.querySelector('#storeOffers')
         const mostRecentOffer = addPastOffer.firstChild
@@ -171,26 +159,18 @@ const game = {
     bonusCaseOutcomes: function() {
         //grab what is in the bonus case and use that to calculate final winnings if user decides to open bonus case
         const bonusValue = document.querySelector('#bonus').innerHTML
-        console.log(bonusValue)
         if(bonusValue === 'add 10k') {
-            //console.log(this.playerWinnings + 10000)
             return this.playerWinnings = this.playerWinnings + 10000
         } else if(bonusValue === 'double money') {
-            //console.log(this.playerWinnings * 2)
             return this.playerWinnings = this.playerWinnings * 2
         } else if(bonusValue === 'lose half') {
-            //console.log(this.playerWinnings / 2)
             return this.playerWinnings = this.playerWinnings / 2
         } else {
-            //console.log(this.playerWinnings = 0)
             return this.playerWinnings = 0
         }
     },
     userOption: function(event) {
         //mechanism to keep track of when user should make decision
-        //console.log('button works')
-        //console.log(event.target)
-        console.log(this)
         if(game.casesToOpen === 16
             || game.casesToOpen === 13
             || game.casesToOpen === 10
@@ -201,7 +181,6 @@ const game = {
             || game.casesToOpen === 0 && game.bonusStatus === false
             || game.casesToOpen === 0 && game.bonusStatus === true
         ) {
-            //console.log('Do you accept the bankers offer?')
             game.dealOrNoDeal()
         } else if(game.casesToOpen === 0 && game.bonusStatus === true) {
             //build bonus case logic into dealOrNoDeal method
@@ -212,46 +191,37 @@ const game = {
         //evaluate whether deal or no deal button is clicked
         //unfreeze board if user rejects deal and there is a case to open
         //evaluate whether user participates in bonus round
-        //console.log(event.target)
         const buttonSelected = event.target.getAttribute('id')
-        console.log(buttonSelected)
         if (buttonSelected === 'deal' && this.casesToOpen === 0 && this.activeBoard === true && this.bonusStatus === false) {
             this.switchCases()
         } else if (buttonSelected === 'noDeal' && this.casesToOpen === 0 && this.activeBoard === true && this.bonusStatus === false) {
             this.keepCase()
         } else if (buttonSelected === 'deal' && this.activeBoard === false && this.bonusStatus === false) {
-            console.log('deal button was selected')
             const showPlayerCaseValue = document.querySelector('.playerCase')
             showPlayerCaseValue.classList.add('revealed')
             this.playerWinnings = this.offerValue
-            console.log(this.playerWinnings)
             this.bonusStatus = true
             this.casesToOpen = 0
             this.offerPrompt()
         } else if (buttonSelected === 'noDeal' && this.casesToOpen > 0 && this.activeBoard === false && this.bonusStatus === false) {
-            console.log('no deal button was selected')
             this.reminderMessage()
             this.activeBoard = true
         } else if (buttonSelected === 'deal' && this.bonusStatus === true) {
             this.bonusCaseOutcomes()
             this.bonusMessage()
             document.querySelectorAll('.buttons').forEach(button => button.parentNode.removeChild(button))
-            console.log(this.playerWinnings)
         } else if (buttonSelected === 'noDeal' && this.bonusStatus === true) {
-            console.log('good game. the bonus case contained ' + document.querySelector('#bonus').innerHTML)
             this.bonusMessage()
             document.querySelectorAll('.buttons').forEach(button => button.parentNode.removeChild(button))
         }
     },
     switchCases: function() {
         //in final round before bonus, player has option to swap cases with the remaining unopened briefcase. This code will run if user decides to switch
-        console.log(this)
         if(this.casesToOpen === 0 && this.activeBoard === true && this.bonusStatus === false){
         const playersCaseLocation = document.querySelector('#playerInfo')
         const playersCase = document.querySelector('.playerCase')
         const board = document.querySelector('main')
         const unopenedCase = document.querySelector('.unopened')
-        console.log(playersCase)
         board.insertBefore(playersCase, unopenedCase)
         playersCaseLocation.appendChild(unopenedCase)
         playersCase.classList.add('revealed')
@@ -272,7 +242,6 @@ const game = {
     },
     keepCase: function() {
         //run this code if the player has one briefcase remaining and decides not to switch
-        //console.log(this)
         const caseValue = document.querySelector('.playerCase')
         caseValue.classList.add('revealed')
         const unopenedCase = document.querySelector('.unopened')
@@ -292,17 +261,14 @@ const game = {
         //clear existing message - will be invoked in each message display method
         const textToReplace = document.querySelector('.messageCenterText')
         while(textToReplace.firstChild){
-            //console.log(textToReplace.firstChild)
             textToReplace.removeChild(textToReplace.firstChild)
         }
     },
     offerPrompt: function() {
         //generate message to use conveying offer information and request to accept or reject offer
-        console.log(this)
         this.clearMessageCenter()
         const offerValue = document.querySelector('.presentedOffer').innerHTML
         const messageCenter = document.querySelector('.messageCenterText')
-        console.log(offerValue)
         const presentOffer = document.createElement('p')
         presentOffer.classList.add('messageCenterText')
         if(this.casesToOpen >= 1) {
@@ -391,7 +357,6 @@ const game = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    //console.log('locked and loaded')
     game.createBriefcases()
     game.createBonusCase()
     game.availableValues()

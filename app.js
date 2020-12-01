@@ -324,6 +324,53 @@ const game = {
         reminder.innerHTML = 'Please select a suitcase!'
         messageCenter.appendChild(reminder)
     },
+    resetBoard: function() {
+        //reset cases selected, round
+
+        game.clearMessageCenter()
+        game.initiateGameMessage()
+
+        const board = document.querySelector('main')
+        const buttonSelected = event.target.getAttribute('id')
+        const playerInfo = document.querySelector('#playerInfo')
+        const playerInfoChildren = document.querySelector('#playerInfo').childElementCount
+        const storeOffers = document.querySelector('#storeOffers')
+        const listOfValues = document.querySelectorAll('.availablePrize')
+        for(let i = 0; i < listOfValues.length; i++) {
+                listOfValues[i].classList.remove('eliminatedPrize')
+            }
+
+        //console.log(event.target)
+        /*if(buttonSelected === 'reset') {
+            console.log('RESET FIRED')
+        }*/
+        
+        while(board.firstChild){
+            board.removeChild(board.firstChild)
+        }
+
+        while(storeOffers.firstChild) {
+            storeOffers.removeChild(storeOffers.firstChild)
+        }
+
+        if(playerInfoChildren > 1) {
+            playerInfo.removeChild(playerInfo.lastChild)
+        }
+
+        game.round = 0
+        game.casesToOpen = 21
+        game.selectedValues = [0]
+        game.activeBoard = true
+        
+
+        game.createBriefcases()
+        game.createBonusCase()
+        game.selectBriefcases()
+        
+
+        
+        
+    },
     addBriefcaseListeners: function() {
         //add listeners to briefcase so they can be opened
         const cases = document.querySelectorAll('.briefcase')
@@ -348,6 +395,10 @@ const game = {
             }
         }
     },
+    addResetListener: function() {
+        const reset = document.querySelector('#reset')
+        reset.addEventListener('click', this.resetBoard)
+    },
     addUserNameListener: function() {
         //add listener to user name submit button
         const nameButton = document.querySelector('#submitName')
@@ -362,5 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
     game.availableValues()
     game.bonusCaseOutcomes()
     game.addButtonListeners()
+    game.addResetListener()
     game.addUserNameListener()
 })
